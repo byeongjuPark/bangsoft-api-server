@@ -9,5 +9,9 @@ import com.bangsoft.apiserver.entity.UserEntity;
 // JpaRepository<Entity, Entity PK Type>
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String>{
-    
+    // query method
+    boolean existsByEmail(String email);
+    boolean existsByNickname(String nickname);
+    boolean existsByTelNumber(String telNumber);
+
 }
