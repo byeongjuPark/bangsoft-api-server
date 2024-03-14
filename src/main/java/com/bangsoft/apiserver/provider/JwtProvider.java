@@ -6,6 +6,7 @@ import java.util.Date;
 import java.security.Key;
 import java.nio.charset.StandardCharsets;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -16,7 +17,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtProvider {
 
-    private String sceretKey = "S3cr3tK3y";
+    @Value("${jwt.secret-key}")
+    private String sceretKey;
 
     public String create(String email) {
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
@@ -24,7 +26,7 @@ public class JwtProvider {
 
         // 알고리즘, 주체, 생성시간, 만료시간, 압축 순
         String jwt = Jwts.builder()
-                .signWith(key, SignatureAlgorithm.ES256)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .setSubject(email).setIssuedAt(new Date())
                 .setExpiration(expiredDate)
                 .compact();

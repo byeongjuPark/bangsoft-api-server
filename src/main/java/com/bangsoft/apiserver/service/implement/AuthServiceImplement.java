@@ -5,10 +5,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.bangsoft.apiserver.dto.request.auth.SignInRequestDto;
 import com.bangsoft.apiserver.dto.request.auth.SignUpRequestDto;
 import com.bangsoft.apiserver.dto.response.ResponseDto;
+import com.bangsoft.apiserver.dto.response.auth.SignInResponseDto;
 import com.bangsoft.apiserver.dto.response.auth.SignUpResponseDto;
 import com.bangsoft.apiserver.entity.UserEntity;
+import com.bangsoft.apiserver.provider.JwtProvider;
 import com.bangsoft.apiserver.repository.UserRepository;
 import com.bangsoft.apiserver.service.AuthService;
 
@@ -19,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthServiceImplement implements AuthService{
 
     private final UserRepository userRepository;    // @RequiredArgsConstructor -> 필수 필드에 대한 생성자 만들어 줌
+    private final JwtProvider jwtProvider;
+
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -53,6 +58,29 @@ public class AuthServiceImplement implements AuthService{
         }
         
         return SignUpResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+        String token = null;
+        try {
+            String email = dto.getEmail();
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if(userEntity == null) return SignInResponseDto.signInFailed();
+
+            String password = dto.getPassword();
+            String encodedPassword = userEntity.getPassword();
+            boolean isMatched = passwordEncoder.matches(password, encodedPassword);
+            if(!isMatched) return SignInResponseDto.signInFailed();
+            
+            token = jwtProvider.create(email);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return SignInResponseDto.success(token);
     }
     
 }

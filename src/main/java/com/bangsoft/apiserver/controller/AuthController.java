@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.bangsoft.apiserver.dto.request.auth.SignInRequestDto;
 import com.bangsoft.apiserver.dto.request.auth.SignUpRequestDto;
 import com.bangsoft.apiserver.dto.response.auth.SignUpResponseDto;
+import com.bangsoft.apiserver.dto.response.auth.SignInResponseDto;
 import com.bangsoft.apiserver.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -29,5 +31,12 @@ public class AuthController {
         ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
         return response;
     }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<? super SignInResponseDto> signIn(@RequestBody @Valid SignInRequestDto requestBody) {
+        ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+        return response;
+    }
+    
     
 }
