@@ -15,7 +15,9 @@ import com.bangsoft.apiserver.provider.JwtProvider;
 import com.bangsoft.apiserver.repository.UserRepository;
 import com.bangsoft.apiserver.service.AuthService;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +49,14 @@ public class AuthServiceImplement implements AuthService{
             String password = dto.getPassword();
             String encodedPassword = passwordEncoder.encode(password);
             dto.setPassword(encodedPassword);
+            dto.setJoinedDate(encodedPassword);
+            
+            String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            dto.setLastestLoginDate(now); 
+            dto.setJoinedDate(now);
+            
+    
+            
 
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);

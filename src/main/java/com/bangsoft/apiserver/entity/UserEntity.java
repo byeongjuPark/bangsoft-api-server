@@ -26,6 +26,7 @@ public class UserEntity {
     private String profileImage;
     private boolean agreedPersonal;
     private String joinedDate; // 가입 날짜(current time)
+    private String lastestLoginDate;
 
     public UserEntity(SignUpRequestDto dto){
         this.email = dto.getEmail();
@@ -35,6 +36,8 @@ public class UserEntity {
         this.address = dto.getAddress();
         this.addressDetail = dto.getAddressDetail();
         this.agreedPersonal = dto.getAgreedPersonal();
+        this.joinedDate = dto.getJoinedDate();
+        this.lastestLoginDate = dto.getLastestLoginDate();
     }
 
 }

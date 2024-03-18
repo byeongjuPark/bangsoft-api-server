@@ -1,5 +1,6 @@
 package com.bangsoft.apiserver.dto.request.auth;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -38,4 +39,9 @@ public class SignUpRequestDto {
     @NotNull // null상태를 검사하기 위해 참조형 Boolean 사용
     @AssertTrue // true가 아니면 받지 않음
     private Boolean agreedPersonal;
+
+    @Nullable
+    private String joinedDate;
+    @Nullable
+    private String lastestLoginDate;
 }
