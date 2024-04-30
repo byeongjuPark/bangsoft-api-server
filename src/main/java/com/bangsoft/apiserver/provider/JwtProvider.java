@@ -34,6 +34,7 @@ public class JwtProvider {
         return jwt;
     }
 
+
     public String validate(String jwt) {
         Claims claims = null;
         Key key = Keys.hmacShaKeyFor(sceretKey.getBytes(StandardCharsets.UTF_8));
